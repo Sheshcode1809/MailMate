@@ -3,10 +3,8 @@ import streamlit as st
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
-def send_email(recipient, body):
+def send_email(recipient, body, sender_email, sender_password):
     try:
-        sender_email = st.secrets["SENDER_EMAIL"]
-        sender_password = st.secrets["EMAIL_PASSWORD"]
         smtp_server = st.secrets.get("SMTP_SERVER", "smtp.gmail.com")
         smtp_port = st.secrets.get("SMTP_PORT", 587)
 
