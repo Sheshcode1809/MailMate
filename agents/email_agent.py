@@ -1,7 +1,7 @@
 import streamlit as st
-import openai
+from groq import Groq
 
-client = openai.OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
+client = Groq(api_key=st.secrets["GROQ_API_KEY"])
 
 def generate_email_response(email_text, tone):
     prompt = f"""
@@ -13,7 +13,7 @@ Email:
 Reply:
 """
     response = client.chat.completions.create(
-        model="gpt-3.5-turbo",
+        model="llama-3.1-8b-instant",
         messages=[{"role": "user", "content": prompt}]
     )
     return response.choices[0].message.content
