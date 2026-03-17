@@ -20,6 +20,32 @@ with col2:
         help="Generate at myaccount.google.com/apppasswords (requires 2FA)"
     )
 
+
+with st.expander("❓ How to get a Gmail App Password?"):
+    st.markdown("""
+    A **Gmail App Password** is a 16-character password that lets apps send emails on your behalf — without using your real Gmail password.
+
+    ### ✅ Step-by-Step Guide:
+
+    **Step 1:** Enable 2-Step Verification on your Google account
+    - Go to → [myaccount.google.com/security](https://myaccount.google.com/security)
+    - Under *"How you sign in to Google"*, click **2-Step Verification**
+    - Follow the steps to turn it on
+
+    **Step 2:** Generate an App Password
+    - Go to → [myaccount.google.com/apppasswords](https://myaccount.google.com/apppasswords)
+    - Sign in if prompted
+    - In the **"App name"** field, type `MailMate` (or any name)
+    - Click **Create**
+    - Copy the **16-character password** shown (e.g. `abcd efgh ijkl mnop`)
+
+    **Step 3:** Paste it above
+    - Remove the spaces — enter it as: `abcdefghijklmnop`
+    - Paste it into the **"Your Gmail App Password"** field above
+
+    > ⚠️ **Important:** Use your **Gmail address** (not alias) in the sender field, and the **App Password** (not your regular Gmail password).
+    """)
+
 st.divider()
 
 # --- Email Content ---
