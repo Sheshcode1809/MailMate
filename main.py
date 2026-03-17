@@ -64,25 +64,44 @@ with col4:
 
 st.divider()
 
-if st.button("🚀 Generate & Send Email", use_container_width=True):
-    if not sender_email or not sender_password:
-        st.warning("⚠️ Please enter your Gmail address and App Password.")
-    elif not recipient_email:
-        st.warning("⚠️ Please enter the recipient's email address.")
-    elif not email_text:
-        st.warning("⚠️ Please paste the email content you want to reply to.")
-    else:
-        with st.spinner("✨ Generating smart reply and sending..."):
-            response = generate_email_response(email_text, tone)
-            send_status = send_email(
-                recipient=recipient_email,
-                body=response,
-                sender_email=sender_email,
-                sender_password=sender_password
-            )
-            st.subheader("📨 Generated Reply")
-            st.markdown(response)
-            if send_status:
-                st.success(f"✅ Email sent successfully to {recipient_email}!")
-            else:
-                st.error("❌ Failed to send email. Check your Gmail address and App Password.")
+# Initialize session state for generated email
+if "generated_email" not in st.session_state:
+    st.session_state.generated_email = None
+
+col_gen, col_reset = st.columns([3, 1])
+
+with col_gen:
+    if st.button("✨ Generate Reply", use_container_width=True):
+        if not email_text:
+            st.warning("⚠️ Please paste the email content you want to reply to.")
+        else:
+            with st.spinner("✨ Generating smart reply..."):
+                st.session_state.generated_email = generate_email_response(email_text, tone)
+
+with col_reset:
+    if st.button("🔄 Reset / Clear", use_container_width=True):
+        st.session_state.generated_email = None
+        st.rerun()
+
+if st.session_state.generated_email:
+    st.divider()
+    st.subheader("📝 Review and Edit Reply")
+    edited_email = st.text_area("Edit your reply before sending:", value=st.session_state.generated_email, height=300)
+    
+    if st.button("🚀 Send Email", use_container_width=True, type="primary"):
+        if not sender_email or not sender_password:
+            st.warning("⚠️ Please enter your Gmail address and App Password.")
+        elif not recipient_email:
+            st.warning("⚠️ Please enter the recipient's email address.")
+        else:
+            with st.spinner("📤 Sending email..."):
+                send_status = send_email(
+                    recipient=recipient_email,
+                    body=edited_email,
+                    sender_email=sender_email,
+                    sender_password=sender_password
+                )
+                if send_status:
+                    st.success(f"✅ Email sent successfully to {recipient_email}!")
+                else:
+                    st.error("❌ Failed to send email. Check your Gmail address and App Password.")
